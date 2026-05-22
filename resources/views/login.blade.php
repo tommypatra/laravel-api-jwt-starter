@@ -7,10 +7,10 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Login App Extension</title>
+    <title>Login WebApp</title>
     <meta name="description" content="" />
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">    
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,13 +50,13 @@
                             <a href="{{ url('/') }}" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
                                     <span class="text-primary">
-                                        <img src="{{asset('/images/logo.png')}}" width="100px">
+                                        <img src="{{ asset('/images/logo.png') }}" width="100px">
                                     </span>
                                 </span>
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-1">Selamat datang di App Extension!</h4>
+                        <h4 class="mb-1">Selamat datang di WebApp!</h4>
                         <p class="mb-6">Silahkan masuk dengan akun SIAKAD/ Web anda</p>
 
                         <form id="formAuthentication" class="mb-6">
@@ -68,8 +68,10 @@
                             <div class="mb-6 form-password-toggle">
                                 <label class="form-label" for="password">Password</label>
                                 <div class="input-group input-group-merge">
-                                    <input type="password" id="password" class="form-control" name="input-password" aria-describedby="password" />
-                                    <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
+                                    <input type="password" id="password" class="form-control" name="input-password"
+                                        aria-describedby="password" />
+                                    <span class="input-group-text cursor-pointer"><i
+                                            class="icon-base bx bx-hide"></i></span>
                                 </div>
                             </div>
                             <div class="mb-8">
@@ -94,7 +96,7 @@
                                         <i class="bx bxl-google fs-4"></i>
                                         <span>Masuk Gmail Siakad</span>
                                     </span>
-                                </div>                            
+                                </div>
                             </div>
                             <div class="mb-6">
                                 <div class="btn btn-warning d-grid w-100" id="masuk-akun-web">
@@ -102,7 +104,7 @@
                                         <i class="bx bx-globe fs-4"></i>
                                         <span>Masuk Akun Web</span>
                                     </span>
-                                </div>                            
+                                </div>
                             </div>
                         </form>
 
@@ -134,7 +136,7 @@
     <!-- JS konten web -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    
+
     <script src="{{ asset('js/config.js') }}?v={{ filemtime(public_path('js/config.js')) }}"></script>
     <script src="{{ asset('js/auth-clear.js') }}?v={{ filemtime(public_path('js/auth-clear.js')) }}"></script>
     <script src="{{ asset('js/login.js') }}?v={{ filemtime(public_path('js/login.js')) }}"></script>

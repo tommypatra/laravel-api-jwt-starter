@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('title')
-    Dashboard - Website
+    Pengguna - Website
 @endsection
 
 @section('container')
@@ -13,8 +13,8 @@
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                     <!-- Title -->
                     <div>
-                        <h5 class="mb-0">Dashboard</h5>
-                        <small class="text-muted">Kelola data aplikasi</small>
+                        <h5 class="mb-0">Pengguna</h5>
+                        <small class="text-muted">Kelola data pengguna</small>
                     </div>
                     <!-- Toolbar -->
                     <div class="d-flex flex-wrap align-items-center gap-2">

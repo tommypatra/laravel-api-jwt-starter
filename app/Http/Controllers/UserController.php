@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RoleRequest;
-use App\Http\Resources\RoleResource;
+use App\Http\Requests\RoleUserRequest;
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Services\ExceptionService;
-use App\Services\RoleService;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class RoleController extends Controller
+class UserController extends Controller
 {
     public function __construct(
-        protected RoleService $roleService,
+        protected UserService $userService,
         protected ExceptionService $exceptionService
     ) {}
 
@@ -23,21 +24,21 @@ class RoleController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $roles = $this->roleService->getData($request);
+            $data_respon = $this->userService->getData($request);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil diambil',
-                'data' => RoleResource::collection($roles->items()),
+                'data' => UserResource::collection($data_respon->items()),
                 'pagination' => [
-                    'current_page' => $roles->currentPage(),
-                    'last_page' => $roles->lastPage(),
-                    'per_page' => $roles->perPage(),
-                    'total' => $roles->total(),
-                    'from' => $roles->firstItem(),
-                    'to' => $roles->lastItem(),
-                    'next_page_url' => $roles->nextPageUrl(),
-                    'prev_page_url' => $roles->previousPageUrl(),
+                    'current_page' => $data_respon->currentPage(),
+                    'last_page' => $data_respon->lastPage(),
+                    'per_page' => $data_respon->perPage(),
+                    'total' => $data_respon->total(),
+                    'from' => $data_respon->firstItem(),
+                    'to' => $data_respon->lastItem(),
+                    'next_page_url' => $data_respon->nextPageUrl(),
+                    'prev_page_url' => $data_respon->previousPageUrl(),
                 ],
             ]);
 
@@ -49,15 +50,15 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoleRequest $request): JsonResponse
+    public function store(UserRequest $request): JsonResponse
     {
         try {
-            $data = $this->roleService->store($request->validated());
+            $data = $this->userService->store($request->validated());
 
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil ditambahkan',
-                'data' => new RoleResource($data),
+                'data' => new UserResource($data),
             ], 201);
 
         } catch (Throwable $e) {
@@ -71,12 +72,12 @@ class RoleController extends Controller
     public function show($id): JsonResponse
     {
         try {
-            $role = $this->roleService->findById($id);
+            $role = $this->userService->findById($id);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Detail role berhasil diambil',
-                'data' => new RoleResource($role),
+                'data' => new UserResource($role),
             ]);
 
         } catch (Throwable $e) {
@@ -87,15 +88,15 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RoleRequest $request, $id): JsonResponse
+    public function update(UserRequest $request, $id): JsonResponse
     {
         try {
-            $data = $this->roleService->update($id, $request->validated());
+            $data = $this->userService->update($id, $request->validated());
 
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil diperbarui',
-                'data' => new RoleResource($data),
+                'data' => new UserResource($data),
             ]);
 
         } catch (Throwable $e) {
@@ -109,7 +110,7 @@ class RoleController extends Controller
     public function destroy($id): JsonResponse
     {
         try {
-            $this->roleService->destroy($id);
+            $this->userService->destroy($id);
 
             return response()->json([
                 'success' => true,
@@ -119,5 +120,22 @@ class RoleController extends Controller
         } catch (Throwable $e) {
             return $this->exceptionService->handle($e);
         }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function updateRoles(RoleUserRequest $request, $id)
+    {
+        $data = $this->userService->updateRoles(
+            $id,
+            $request->roles
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Role user berhasil diperbarui.',
+            'data' => new UserResource($data),
+        ]);
     }
 }

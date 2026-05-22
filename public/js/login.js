@@ -7,7 +7,7 @@ async function checkToken() {
         return;
     }
     try {
-        const res = await axios.get(`${API_URL}/check-token`, {
+        const res = await axios.get(`${API_URL}/auth/validate`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: 'application/json'
@@ -56,7 +56,7 @@ $(document).ready(function () {
             const $btn = $('#masuk');
             $btn.prop('disabled', true).text('Memproses...');
             try {
-                const res = await axios.post(`${API_URL}/auth-check`, {
+                const res = await axios.post(`${API_URL}/auth/login-siakad`, {
                     email: $('#email').val(),
                     password: $('#password').val()
                 }, {
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     $('#masuk-gmail').on('click', function (e) {
         e.preventDefault();
-        window.location.href = '/api/auth/google';
+        window.location.href = '/api/auth/login-google';
     });
     
     $('#masuk-akun-web').on('click', async function () {
@@ -99,7 +99,7 @@ $(document).ready(function () {
         }        
         $btn.prop('disabled', true).text('Memproses...');
         try {
-            const res = await axios.post(`${API_URL}/auth-web`, {
+            const res = await axios.post(`${API_URL}/auth/login-web`, {
                 email: $('#email').val(),
                 password: $('#password').val()
             }, {

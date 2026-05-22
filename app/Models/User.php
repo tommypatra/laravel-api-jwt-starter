@@ -59,13 +59,18 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    public function dosen()
-    {
-        return $this->hasOne(Dosen::class);
-    }
-
     public function roleUser()
     {
         return $this->hasMany(RoleUser::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(
+            Role::class,
+            'role_users',
+            'user_id',
+            'role_id'
+        );
     }
 }

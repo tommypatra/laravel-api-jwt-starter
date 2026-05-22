@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Libraries\Sevima;
-use App\Models\Dosen;
 use App\Models\RoleUser;
 use App\Models\User;
 use Exception;
@@ -130,20 +129,10 @@ class AuthService
                 ]
             );
 
-            $roleAplikasi = [2];
-
-            if ($isDosen) {
-                $roleAplikasi[] = 4;
-
-                Dosen::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                    ],
-                    [
-                        'nip' => $nip,
-                    ]
-                );
-            }
+            $roleAplikasi = array_filter([
+                2,
+                $isDosen ? 4 : null,
+            ]);
 
             foreach ($roleAplikasi as $roleId) {
                 RoleUser::firstOrCreate([

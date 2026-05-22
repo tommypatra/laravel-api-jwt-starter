@@ -27,6 +27,15 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('template') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <!-- Page CSS -->
+    <style>
+        #modal-pilih-role {
+            z-index: 2000;
+        }
+
+        #modal-pilih-role .modal-backdrop {
+            z-index: 1999;
+        }
+    </style>
     @stack('styles')
 
     <!-- Helpers -->
@@ -44,63 +53,7 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
-
-            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-                <div class="app-brand demo">
-                    <a href="{{ url('/dashboard') }}" class="app-brand-link">
-                        <span class="app-brand-logo demo">
-                            <span class="text-primary">
-                                <img src="{{ asset('/images/logo.png') }}" width="50px">
-                            </span>
-                        </span>
-                        <span class="app-brand-text demo menu-text fw-bold ms-2">AppExt IAIN Kendari</span>
-                    </a>
-                    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-                        <i class="bx bx-chevron-left d-block d-xl-none align-middle"></i>
-                    </a>
-                </div>
-                <div class="menu-divider mt-0"></div>
-                <div class="menu-inner-shadow"></div>
-                <ul class="menu-inner py-1">
-                    <!-- Dashboards -->
-                    <li class="menu-item active open">
-                        <a href="{{ url('/dashboard') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-smile"></i>
-                            <div class="text-truncate" data-i18n="Boxicons">Dashboards</div>
-                        </a>
-                    </li>
-
-                    <!-- Apps & Pages -->
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Apps &amp; Pages</span>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="icons-boxicons.html" class="menu-link">
-                            <i class="menu-icon tf-icons bx bxs-label"></i>
-                            <div class="text-truncate" data-i18n="Boxicons">MenuWeb</div>
-                        </a>
-                    </li>
-
-                    <!-- Components -->
-                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Akun</span></li>
-                    <!-- Cards -->
-                    <li class="menu-item">
-                        <a href="icons-boxicons.html" class="menu-link">
-                            <i class="menu-icon tf-icons bx bxs-label"></i>
-                            <div class="text-truncate" data-i18n="Boxicons">Identitas</div>
-                        </a>
-                    </li>
-
-                    <li class="menu-item" id="menu-ganti-akses" style="display:none;">
-                        <a href="javascript:;" class="menu-link" id="ganti-akses">
-                            <i class="menu-icon tf-icons bx bxs-label"></i>
-                            <div class="text-truncate" data-i18n="Boxicons">Ganti Akses</div>
-                        </a>
-                    </li>
-
-                </ul>
-            </aside>
+            @include('menu')
             <!-- / Menu -->
 
             <!-- Layout container -->
@@ -117,7 +70,7 @@
                     <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
                         <!-- Search -->
                         <div class="navbar-nav align-items-center me-auto">
-                            <h5 class="mb-0">App Extension Siakad IAIN Kendari</h5>
+                            <h5 class="mb-0">@yield('title', 'Aplikasi')</h5>
                         </div>
                         <!-- /Search -->
 
@@ -143,8 +96,7 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <h6 class="mb-0" id="user-name">user-name</h6>
-                                                    <small class="text-body-secondary"
-                                                        id="user-role">user-role</small>
+                                                    <small class="text-body-secondary" id="user-role">user-role</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -199,8 +151,8 @@
                                         class="footer-link">ThemeSelection</a>
                                 </div>
                                 <div class="d-none d-lg-inline-block">
-                                    <a href="https://themeselection.com/item/category/admin-templates/"
-                                        target="_blank" class="footer-link me-4">Admin Templates</a>
+                                    <a href="https://themeselection.com/item/category/admin-templates/" target="_blank"
+                                        class="footer-link me-4">Admin Templates</a>
 
                                     <a href="https://themeselection.com/license/" class="footer-link me-4"
                                         target="_blank">License</a>
@@ -239,6 +191,29 @@
       >
     </div> -->
 
+
+    <!-- Modal Pilih Role -->
+    <div class="modal fade" id="modal-pilih-role" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pilih Role</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="pilih_role"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" id="btn-batal-pilih-role">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Core JS -->
     <script src="{{ asset('template') }}/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="{{ asset('template') }}/assets/vendor/libs/popper/popper.js"></script>
@@ -258,19 +233,7 @@
 
     <script src="{{ asset('js/config.js') }}?v={{ filemtime(public_path('js/config.js')) }}"></script>
     <script src="{{ asset('js/auth-clear.js') }}?v={{ filemtime(public_path('js/auth-clear.js')) }}"></script>
-    <script src="{{ asset('js/auth-dashboard.js') }}?v={{ filemtime(public_path('js/auth-dashboard.js')) }}"></script>
-
-    <script>
-        const roles = JSON.parse(localStorage.getItem('roles') || '[]');
-        $(document).ready(function() {
-            if (roles.length > 1) {
-                $('body').show();
-                $('#menu-ganti-akses').show();
-            }
-        });
-
-        // #menu-ganti-akses
-    </script>
+    <script src="{{ asset('js/dashboard.js') }}?v={{ filemtime(public_path('js/dashboard.js')) }}"></script>
 
     @stack('scripts')
 </body>

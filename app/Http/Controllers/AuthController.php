@@ -79,7 +79,7 @@ class AuthController extends Controller
         }
     }
 
-    public function checkToken()
+    public function validate()
     {
         $user = auth()->guard('api')->user();
 
@@ -95,6 +95,7 @@ class AuthController extends Controller
         $provider = Socialite::driver('google');
 
         /** @var GoogleProvider $provider */
+
         return $provider->stateless()->redirect();
 
     }

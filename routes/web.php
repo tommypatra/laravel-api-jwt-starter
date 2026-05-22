@@ -7,5 +7,8 @@ Route::get('/', [WebController::class, 'login']);
 Route::get('/login', [WebController::class, 'login']);
 Route::get('/dashboard', [WebController::class, 'dashboard']);
 
-Route::get('/api-sevima/login', [WebController::class, 'loginSevima']);
-Route::get('/api-sevima/{api_keyword}/{id?}/{id2?}', [WebController::class, 'index']);
+// Route::get('/api-sevima/login', [WebController::class, 'loginSevima']);
+// Route::get('/api-sevima/{api_keyword}/{id?}/{id2?}', [WebController::class, 'index']);
+
+Route::get('/user', [WebController::class, 'user'])->name('user');
+Route::get('/role', [WebController::class, 'role'])->name('role');

@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FakultasController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,15 +11,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::post('auth-check', [AuthController::class, 'authCheck']);
+Route::post('auth/login-siakad', [AuthController::class, 'authCheck']);
 
 Route::post(
-    'auth-web',
+    'auth/login-web',
     [AuthController::class, 'authWeb']
 )->middleware('throttle:auth-web');
 
-Route::get('auth/google', [AuthController::class, 'redirectGoogle']);
-Route::get('auth/callback', [AuthController::class, 'callbackGoogle']);
+Route::get('auth/login-google', [AuthController::class, 'redirectGoogle']);
+Route::get('auth/login-google/callback', [AuthController::class, 'callbackGoogle']);
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,8 @@ Route::middleware([
     'throttle:jwt-api',
 ])->group(function () {
 
-    Route::get('check-token', [AuthController::class, 'checkToken']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('auth/validate', [AuthController::class, 'validate']);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
 
     /*
     |--------------------------------------------------------------------------
@@ -40,22 +41,25 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware([
-        'role:1,3',
-        'throttle:sync-api',
-    ])->prefix('fakultas')->group(function () {
-        Route::get('preview-sync', [FakultasController::class, 'previewSync']);
-        Route::post('sync', [FakultasController::class, 'sync']);
-    });
+    // Route::middleware([
+    //     'role:Admin,Pengelola',
+    //     'throttle:sync-api',
+    // ])->prefix('fakultas')->group(function () {
+    //     Route::get('preview-sync', [FakultasController::class, 'previewSync']);
+    //     Route::post('sync', [FakultasController::class, 'sync']);
+    // });
 
     /*
     |--------------------------------------------------------------------------
-    | CRUD Fakultas
+    | CRUD roles
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware('role:1')->group(function () {
-        Route::apiResource('fakultas', FakultasController::class);
+    Route::middleware('role:Admin')->group(function () {
+        Route::apiResource('user', UserController::class);
+        Route::put('user/{id}/roles', [UserController::class, 'updateRoles']);
+
+        Route::apiResource('role', RoleController::class);
     });
 
 });

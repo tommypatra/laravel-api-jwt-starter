@@ -27,7 +27,9 @@ class RoleMiddleware
         }
 
         $hasRole = RoleUser::where('user_id', $user->id)
-            ->whereIn('role_id', $roles)
+            ->whereHas('role', function ($query) use ($roles) {
+                $query->whereIn('nama', $roles);
+            })
             ->exists();
 
         if (! $hasRole) {
@@ -37,6 +39,6 @@ class RoleMiddleware
             ], 403);
         }
 
-        return $next($request);
+        return $next($request);    
     }
 }
