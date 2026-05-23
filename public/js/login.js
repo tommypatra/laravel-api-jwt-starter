@@ -1,3 +1,5 @@
+let countdownTimer = null;
+
 async function checkToken() {
     const token = localStorage.getItem('token');
     const API_URL = window.APP.API_URL;
@@ -20,7 +22,78 @@ async function checkToken() {
     }
 }
 
+/*
+|--------------------------------------------------------------------------
+| Pilih Role
+|--------------------------------------------------------------------------
+*/
+
+function getRoles() {
+    return JSON.parse(localStorage.getItem('roles') || '[]');
+}
+
+function renderPilihRole() {
+    const roles = getRoles();
+    let html = '';
+    roles.forEach(item => {
+        const active =
+            localStorage.getItem('role_id_default') == item.role_id
+                ? 'active'
+                : '';
+
+        html += `
+            <a
+                href="javascript:void(0)"
+                class="list-group-item list-group-item-action pilih-role ${active}"
+                data-role-id="${item.role_id}"
+                data-role-name="${item.role.nama}"
+            >
+                ${item.role.nama}
+            </a>
+        `;
+    });
+
+    $('#pilih_role').html(`
+        <div class="list-group">
+            ${html}
+        </div>
+    `);
+}
+
+$(document).on('click', '.pilih-role', function () {
+    const roleId = $(this).data('role-id');
+    const roleName = $(this).data('role-name');
+
+    localStorage.setItem('role_default', roleName);
+    localStorage.setItem('role_id_default', roleId);
+
+    $('#modal-pilih-role').modal('hide');
+
+    window.location.href = '/dashboard';
+});
+
+function startRoleCountdown() {
+    let seconds = 5;
+    $('#countdown-role').text(seconds);
+    countdownTimer = setInterval(function () {
+        seconds--;
+        $('#countdown-role').text(seconds);
+        if (seconds <= 0) {
+            clearInterval(countdownTimer);
+            window.location.href = '/dashboard';
+        }
+    }, 1000);
+}
+
 $(document).ready(function () {
+    //jika ada dataCallbackGoogle redirect dari login google
+    if (dataCallbackGoogle) {
+        $('body').show();
+        redirectLogin(dataCallbackGoogle);
+        return;
+    }
+
+    //check token bagi yg sudah login
     checkToken();
     $('#formAuthentication').validate({
         rules: {
@@ -135,7 +208,18 @@ $(document).ready(function () {
         localStorage.setItem('email', data_response.email);
         localStorage.setItem('name', data_response.name);
         localStorage.setItem('roles', JSON.stringify(data_response.roles));
-        window.location.href = '/dashboard';
+
+        if (getRoles().length > 1) {
+            renderPilihRole();
+            $('#modal-pilih-role').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            $('#modal-pilih-role').modal('show');
+            startRoleCountdown();
+        }else{
+            window.location.href = '/dashboard';
+        }
     }
 
 });

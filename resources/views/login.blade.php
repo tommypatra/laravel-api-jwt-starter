@@ -117,6 +117,30 @@
 
     <!-- / Content -->
 
+    <!-- Modal Pilih Role -->
+    <div class="modal fade" id="modal-pilih-role" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pilih Role</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="pilih_role"></div>
+                    <div class="text-center mt-3 text-muted">
+                        Otomatis masuk dalam
+                        <strong id="countdown-role">5</strong>
+                        detik...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // jika ada dataCallbackGoogle redirect dari login google
+        const dataCallbackGoogle = @json($dataCallbackGoogle ?? null);
+    </script>
+
     <!-- Core JS -->
     <script src="{{ asset('template') }}/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="{{ asset('template') }}/assets/vendor/libs/popper/popper.js"></script>

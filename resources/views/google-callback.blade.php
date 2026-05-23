@@ -18,6 +18,7 @@
         localStorage.setItem('roles', JSON.stringify(data_response.roles));
         window.location.href = '/dashboard';
     </script>
+
 </body>
 
 </html>

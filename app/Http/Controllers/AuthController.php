@@ -110,7 +110,7 @@ class AuthController extends Controller
                 $googleUser->getEmail()
             );
 
-            return view('google-callback', ['data' => $result]);
+            return view('login', ['dataCallbackGoogle' => $result]);
         } catch (Exception $e) {
             return redirect('/login');
         }
