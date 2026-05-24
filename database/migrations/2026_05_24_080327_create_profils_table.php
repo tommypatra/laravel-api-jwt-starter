@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_users', function (Blueprint $table) {
+        Schema::create('profils', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
+                ->unique()
                 ->cascadeOnDelete();
-
-            $table->foreignId('role_id')
-                ->constrained()
-                ->restrictOnDelete();
-            $table->unique(['user_id', 'role_id']);
+            $table->foreignId('foto_upload_id')
+                ->nullable()
+                ->constrained('uploads')
+                ->nullOnDelete();
+            $table->string('hp', 20)->nullable();
+            $table->string('alamat', 180)->nullable();
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_users');
+        Schema::dropIfExists('profils');
     }
 };

@@ -73,7 +73,7 @@ $(document).on('click', '.pilih-role', function () {
 });
 
 function startRoleCountdown() {
-    let seconds = 5;
+    let seconds = 10;
     $('#countdown-role').text(seconds);
     countdownTimer = setInterval(function () {
         seconds--;

@@ -90,6 +90,8 @@ class UserService
         return DB::transaction(function () use ($id) {
             $user = User::findOrFail($id);
             $user->roleUser()->delete();
+            $user->mahasiswa()->delete();
+            $user->pegawai()->delete();
 
             return $user->delete();
         });

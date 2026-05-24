@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_users', function (Blueprint $table) {
+        Schema::create('uploads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
-
-            $table->foreignId('role_id')
-                ->constrained()
-                ->restrictOnDelete();
-            $table->unique(['user_id', 'role_id']);
+            $table->ulid('uuid')->unique();
+            $table->string('original_name', 180)->nullable();
+            $table->string('path', 180)->nullable();
+            $table->string('disk', 50)->default('public');
+            $table->string('mime_type', 180)->nullable();
+            $table->integer('size')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_users');
+        Schema::dropIfExists('uploads');
     }
 };

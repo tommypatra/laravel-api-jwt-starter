@@ -283,7 +283,7 @@ $('#form-role').on('submit', async function (e) {
         $('input[name="roles[]"]:checked').each(function () {
             roles.push($(this).val());
         });
-        await axios.put(`${API_URL}/user/${userId}/
+        await axios.put(`${API_URL}/user/${userId}/roles
             `, {
             roles
         });

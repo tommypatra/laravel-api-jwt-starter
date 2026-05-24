@@ -12,3 +12,6 @@ Route::get('/dashboard', [WebController::class, 'dashboard']);
 
 Route::get('/user', [WebController::class, 'user'])->name('user');
 Route::get('/role', [WebController::class, 'role'])->name('role');
+Route::get('/identitas', [WebController::class, 'identitas'])->name('identitas');
+Route::get('/pegawai/profil', [WebController::class, 'pegawaiProfil'])->name('pegawai.profil');
+Route::get('/mahasiswa/profil', [WebController::class, 'mahasiswaProfil'])->name('mahasiswa.profil');

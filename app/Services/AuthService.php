@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Libraries\Sevima;
+use App\Models\Mahasiswa;
+use App\Models\Pegawai;
 use App\Models\RoleUser;
 use App\Models\User;
 use Exception;
@@ -95,6 +97,7 @@ class AuthService
             'peg',
             'adpro',
             'dosen',
+            'mhs',
         ];
 
         $userRoles = $roles
@@ -106,17 +109,22 @@ class AuthService
                 'Anda tidak memiliki akses ke aplikasi ini'
             );
         }
-
         $isDosen = in_array('dosen', $userRoles);
+        $isMahasiswa = in_array('mhs', $userRoles);
+        $mahasiswa = null;
+        $pegawai = null;
 
-        $pegawai = $roles->first(function ($role) {
-            return ! empty($role['nip']);
-        });
-
-        $nip = $pegawai['nip'] ?? null;
+        if ($isMahasiswa) {
+            $mahasiswa = $roles->first(function ($role) {
+                return ! empty($role['nim']);
+            });
+        } else {
+            $pegawai = $roles->first(function ($role) {
+                return ! empty($role['nip']);
+            });
+        }
 
         DB::beginTransaction();
-
         try {
             $user = User::firstOrCreate(
                 [
@@ -129,10 +137,40 @@ class AuthService
                 ]
             );
 
-            $roleAplikasi = array_filter([
-                2,
-                $isDosen ? 4 : null,
-            ]);
+            $roleAplikasi = [];
+            if ($isMahasiswa) {
+                $roleAplikasi[] = 4;
+                Mahasiswa::firstOrCreate([
+                    'user_id' => $user->id,
+                    'nim' => $mahasiswa['nim'],
+                    'program_studi' => $mahasiswa['nama_satker'] ?? null,
+                ]);
+            } else {
+                if ($isDosen) {
+                    $roleAplikasi[] = 3;
+                    if (count($userRoles) > 1) {
+                        $roleAplikasi[] = 2;
+                    }
+                    Pegawai::firstOrCreate([
+                        'user_id' => $user->id,
+                        'nip' => $pegawai['nip'],
+                        'status' => 'dosen',
+                    ]);
+
+                } else {
+                    $roleAplikasi[] = 2;
+                    Pegawai::firstOrCreate([
+                        'user_id' => $user->id,
+                        'nip' => $pegawai['nip'],
+                        'status' => 'pegawai',
+                    ]);
+                }
+            }
+
+            // $roleAplikasi = array_filter([
+            //     2,
+            //     $isDosen ? 4 : null,
+            // ]);
 
             foreach ($roleAplikasi as $roleId) {
                 RoleUser::firstOrCreate([

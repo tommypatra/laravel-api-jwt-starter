@@ -9,6 +9,7 @@ use App\Services\ExceptionService;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class UserController extends Controller
@@ -72,12 +73,12 @@ class UserController extends Controller
     public function show($id): JsonResponse
     {
         try {
-            $role = $this->userService->findById($id);
+            $data = $this->userService->findById($id);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Detail role berhasil diambil',
-                'data' => new UserResource($role),
+                'message' => 'Detail berhasil diambil',
+                'data' => new UserResource($data),
             ]);
 
         } catch (Throwable $e) {
@@ -125,7 +126,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function updateRoles(RoleUserRequest $request, $id)
+    public function updateRoles(RoleUserRequest $request, $id): JsonResponse
     {
         $data = $this->userService->updateRoles(
             $id,
@@ -137,5 +138,41 @@ class UserController extends Controller
             'message' => 'Role user berhasil diperbarui.',
             'data' => new UserResource($data),
         ]);
+    }
+
+    /**
+     * Identitas
+     */
+    public function dataIdentitas(): JsonResponse
+    {
+        try {
+            $role = $this->userService->findById(Auth::user()->id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail berhasil diambil',
+                'data' => new UserResource($role),
+            ]);
+
+        } catch (Throwable $e) {
+            return $this->exceptionService->handle($e);
+        }
+
+    }
+
+    public function ubahDataIdenitas(UserRequest $request): JsonResponse
+    {
+        try {
+            $data = $this->userService->update(Auth::user()->id, $request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil diperbarui',
+                'data' => new UserResource($data),
+            ]);
+
+        } catch (Throwable $e) {
+            return $this->exceptionService->handle($e);
+        }
     }
 }

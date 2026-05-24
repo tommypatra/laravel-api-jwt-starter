@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_users', function (Blueprint $table) {
+        Schema::create('pegawais', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
+                ->unique()
                 ->cascadeOnDelete();
-
-            $table->foreignId('role_id')
-                ->constrained()
-                ->restrictOnDelete();
-            $table->unique(['user_id', 'role_id']);
+            $table->string('nip', 50)->unique();
+            $table->enum('status', ['dosen', 'pegawai'])->nullable()->default('pegawai');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_users');
+        Schema::dropIfExists('pegawais');
     }
 };

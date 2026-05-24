@@ -105,8 +105,9 @@
                                         <div class="dropdown-divider my-1"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="icon-base bx bx-user icon-md me-3"></i><span>My Profile</span>
+                                        <a class="dropdown-item" href="{{ route('identitas') }}">
+                                            <i class="icon-base bx bxs-user-account icon-md me-3"></i><span>Profil
+                                                Akun</span>
                                         </a>
                                     </li>
                                     <li>

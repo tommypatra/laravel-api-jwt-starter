@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +24,7 @@ Route::post(
 Route::get('auth/login-google', [AuthController::class, 'redirectGoogle']);
 Route::get('auth/login-google/callback', [AuthController::class, 'callbackGoogle']);
 
+Route::get('upload/view/{uuid}', [UploadController::class, 'view']);
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED
@@ -35,19 +39,25 @@ Route::middleware([
     Route::get('auth/validate', [AuthController::class, 'validate']);
     Route::post('auth/logout', [AuthController::class, 'logout']);
 
+    Route::get('identitas', [UserController::class, 'dataIdentitas']);
+    Route::put('identitas', [UserController::class, 'ubahDataIdenitas']);
+
+    Route::apiResource('upload', UploadController::class)->except(['update']);
     /*
     |--------------------------------------------------------------------------
-    | Sync Fakultas
+    | profil
     |--------------------------------------------------------------------------
     */
 
-    // Route::middleware([
-    //     'role:Admin,Pengelola',
-    //     'throttle:sync-api',
-    // ])->prefix('fakultas')->group(function () {
-    //     Route::get('preview-sync', [FakultasController::class, 'previewSync']);
-    //     Route::post('sync', [FakultasController::class, 'sync']);
-    // });
+    Route::middleware('role:Pengelola,Dosen,Admin')->group(function () {
+        Route::get('pegawai/profil', [PegawaiController::class, 'showProfil']);
+        Route::put('pegawai/profil', [PegawaiController::class, 'simpanProfil']);
+    });
+
+    Route::middleware('role:Mahasiswa')->group(function () {
+        Route::get('mahasiswa/profil', [MahasiswaController::class, 'showProfil']);
+        Route::put('mahasiswa/profil', [MahasiswaController::class, 'simpanProfil']);
+    });
 
     /*
     |--------------------------------------------------------------------------

@@ -29,9 +29,9 @@ class DatabaseSeeder extends Seeder
 
         $dtdef = [
             ['role' => 'Admin', 'is_admin' => 1],
-            ['role' => 'Pengguna', 'is_admin' => 0],
             ['role' => 'Pengelola', 'is_admin' => 0],
             ['role' => 'Dosen', 'is_admin' => 0],
+            ['role' => 'Mahasiswa', 'is_admin' => 0],
         ];
 
         foreach ($dtdef as $dt) {

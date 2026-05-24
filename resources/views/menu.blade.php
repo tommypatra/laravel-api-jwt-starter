@@ -28,10 +28,17 @@
             <span class="menu-header-text">Apps &amp; Pages</span>
         </li>
 
-        <li class="menu-item">
-            <a href="javascript:;" class="menu-link">
-                <i class="menu-icon tf-icons bx bxs-label"></i>
-                <div class="text-truncate" data-i18n="Boxicons">MenuWeb</div>
+        <li class="menu-item d-none" data-role="Dosen,Pengelola">
+            <a href="{{ route('pegawai.profil') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-id-card"></i>
+                <div class="text-truncate" data-i18n="Boxicons">Profil Pegawai</div>
+            </a>
+        </li>
+
+        <li class="menu-item d-none" data-role="Mahasiswa">
+            <a href="{{ route('mahasiswa.profil') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-book-reader"></i>
+                <div class="text-truncate" data-i18n="Boxicons">Profil Mahasiswa</div>
             </a>
         </li>
 
@@ -55,27 +62,20 @@
             </ul>
         </li>
 
-        <li class="menu-item">
-            <a href="javascript:;" class="menu-link">
-                <i class="menu-icon tf-icons bx bxs-label"></i>
-                <div class="text-truncate" data-i18n="Boxicons">MenuWeb</div>
-            </a>
-        </li>
-
 
         <!-- Components -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Akun</span></li>
         <!-- Cards -->
         <li class="menu-item">
-            <a href="javascript:;" class="menu-link">
-                <i class="menu-icon tf-icons bx bxs-label"></i>
-                <div class="text-truncate" data-i18n="Boxicons">Identitas</div>
+            <a href="{{ route('identitas') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-user-account"></i>
+                <div class="text-truncate" data-i18n="Boxicons">Profil Akun</div>
             </a>
         </li>
 
         <li class="menu-item d-none" id="menu-ganti-role">
             <a href="javascript:;" class="menu-link" id="menu-ganti-role-link">
-                <i class="menu-icon tf-icons bx bxs-label"></i>
+                <i class="menu-icon tf-icons bx bx-shield-quarter"></i>
                 <div class="text-truncate" data-i18n="Boxicons">Ganti Akses</div>
             </a>
         </li>

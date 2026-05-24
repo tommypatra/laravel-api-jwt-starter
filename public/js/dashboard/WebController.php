@@ -29,13 +29,8 @@ class WebController extends Controller
         return view('dashboard.identitas');
     }
 
-    public function pegawaiProfil()
+    public function pegawaiData()
     {
-        return view('dashboard.pegawai_profil');
-    }
-
-    public function mahasiswaProfil()
-    {
-        return view('dashboard.mahasiswa_profil');
+        return view('dashboard.pegawai_data');
     }
 }
