@@ -49,7 +49,7 @@ class UploadController extends Controller
     public function store(UploadRequest $request): JsonResponse
     {
         try {
-            $data = $this->uploadService->store($request->validated());
+            $data = $this->uploadService->store($request);
 
             return response()->json([
                 'success' => true,
