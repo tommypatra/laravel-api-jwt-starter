@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -81,7 +82,7 @@ class AuthController extends Controller
 
     public function validate()
     {
-        $user = auth()->guard('api')->user();
+        $user = Auth::user();
 
         return response()->json([
             'status' => true,

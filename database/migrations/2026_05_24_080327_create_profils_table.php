@@ -22,8 +22,9 @@ return new class extends Migration
                 ->constrained('uploads')
                 ->nullOnDelete();
             $table->string('hp', 20)->nullable();
-            $table->string('alamat', 180)->nullable();
+            $table->text('alamat')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
+
             $table->timestamps();
         });
     }

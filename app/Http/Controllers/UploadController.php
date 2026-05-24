@@ -8,7 +8,6 @@ use App\Services\ExceptionService;
 use App\Services\UploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class UploadController extends Controller
